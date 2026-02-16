@@ -3,6 +3,7 @@
 import { useRef, useEffect, useCallback, useState, useMemo } from "react"
 import useSWRInfinite from "swr/infinite"
 import { GalleryCard, type GalleryImage } from "@/components/gallery-card"
+import { Lightbox } from "@/components/lightbox"
 import { Loader2 } from "lucide-react"
 
 interface ImagesResponse {
@@ -43,6 +44,7 @@ export function GalleryGrid({ refreshKey }: { refreshKey: number }) {
     Record<string, { width: number; height: number }>
   >({})
   const [columns, setColumns] = useState(4)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   // Responsive column count based on container width
   useEffect(() => {
@@ -236,15 +238,21 @@ export function GalleryGrid({ refreshKey }: { refreshKey: number }) {
       <div ref={containerRef} className="flex w-full gap-4">
         {columnArrays.map((col, colIdx) => (
           <div key={colIdx} className="min-w-0 flex-1 space-y-4">
-            {col.map((image) => (
-              <GalleryCard
-                key={image.metaUrl}
-                image={image}
-                aspectRatio={aspectRatios[image.url]}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-              />
-            ))}
+            {col.map((image) => {
+              const globalIndex = images.findIndex(
+                (img) => img.metaUrl === image.metaUrl
+              )
+              return (
+                <GalleryCard
+                  key={image.metaUrl}
+                  image={image}
+                  aspectRatio={aspectRatios[image.url]}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                  onClick={() => setLightboxIndex(globalIndex)}
+                />
+              )
+            })}
           </div>
         ))}
       </div>
@@ -253,6 +261,15 @@ export function GalleryGrid({ refreshKey }: { refreshKey: number }) {
         <div className="flex items-center justify-center py-8">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
+      )}
+
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={images}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={(idx) => setLightboxIndex(idx)}
+        />
       )}
     </>
   )

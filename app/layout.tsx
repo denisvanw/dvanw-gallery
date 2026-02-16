@@ -15,7 +15,7 @@ const oswald = Oswald({
 })
 
 export const metadata: Metadata = {
-  title: 'dvanw test',
+  title: "Même si c'est vrai, c'est faux.",
   description: 'A dark Tumblr-style image gallery with infinite scrolling',
 }
 
