@@ -56,7 +56,8 @@ export function GalleryGrid({ refreshKey }: { refreshKey: number }) {
       if (w < 480) setColumns(1)
       else if (w < 768) setColumns(2)
       else if (w < 1024) setColumns(3)
-      else setColumns(4)
+      else if (w < 1500) setColumns(4)
+      else setColumns(5)
     }
 
     updateColumns()
