@@ -46,25 +46,20 @@ export function GalleryGrid({ refreshKey }: { refreshKey: number }) {
   const [columns, setColumns] = useState(4)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
-  // Responsive column count based on container width
+  // Responsive column count based on browser window width
   useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-
     const updateColumns = () => {
-      const w = el.offsetWidth
+      const w = window.innerWidth
       if (w < 480) setColumns(1)
-      else if (w < 768) setColumns(2)
+      else if (w < 800) setColumns(2)
       else if (w < 1024) setColumns(3)
       else if (w < 1500) setColumns(4)
       else setColumns(5)
     }
 
     updateColumns()
-
-    const observer = new ResizeObserver(() => updateColumns())
-    observer.observe(el)
-    return () => observer.disconnect()
+    window.addEventListener("resize", updateColumns)
+    return () => window.removeEventListener("resize", updateColumns)
   }, [])
 
   // Revalidate when refreshKey changes

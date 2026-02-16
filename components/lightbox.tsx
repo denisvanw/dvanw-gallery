@@ -99,13 +99,21 @@ export function Lightbox({
         </button>
       )}
 
-      {/* Image filling the full viewport */}
-      <img
-        src={image.url}
-        alt={image.title}
-        className="relative z-[1] h-screen w-screen object-contain"
-        onClick={(e) => e.stopPropagation()}
-      />
+      {/* Image filling the viewport with padding */}
+      <div
+        className="relative z-[1]"
+        style={{
+          width: "calc(100vw - 40px)",
+          height: "calc(100vh - 40px)",
+        }}
+      >
+        <img
+          src={image.url}
+          alt={image.title}
+          className="h-full w-full object-contain"
+          onClick={(e) => e.stopPropagation()}
+        />
+      </div>
     </div>
   )
 }
