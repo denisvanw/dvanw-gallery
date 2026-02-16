@@ -23,6 +23,7 @@ interface GalleryCardProps {
     updates: { title?: string; lastModified?: string }
   ) => Promise<void>
   onDelete: (url: string, metaUrl: string) => Promise<void>
+  onClick?: () => void
 }
 
 export function GalleryCard({
@@ -30,6 +31,7 @@ export function GalleryCard({
   aspectRatio,
   onUpdate,
   onDelete,
+  onClick,
 }: GalleryCardProps) {
   const [editingTitle, setEditingTitle] = useState(false)
   const [editingDate, setEditingDate] = useState(false)
@@ -186,10 +188,11 @@ export function GalleryCard({
           src={image.url}
           alt={image.title}
           className={cn(
-            "w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]",
+            "w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-[1.02]",
             !loaded && "absolute inset-0 opacity-0"
           )}
           onLoad={() => setLoaded(true)}
+          onClick={onClick}
           loading="lazy"
         />
 
